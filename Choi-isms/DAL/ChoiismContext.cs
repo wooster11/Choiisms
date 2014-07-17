@@ -11,7 +11,7 @@ namespace Choi_isms.DAL
 	public class ChoiismContext : DbContext
 	{
 		public ChoiismContext()
-			: base("SQLSERVER_CONNECTION_STRING")
+			: base("ChoiismsConn")
 		{
 		}
 
