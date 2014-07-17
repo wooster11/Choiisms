@@ -21,27 +21,40 @@ namespace Choi_isms.Controllers
 			}
 			catch (Exception)
 			{
-				//return NotFound();
-				throw;
+				return NotFound();
 			}
 		}
 
-		public IHttpActionResult GetChoiism(int id)
+		public IHttpActionResult GetChoiism(int id, string retrievalType)
 		{
 			try
 			{
 				Choiism c;
-				do
+				switch (retrievalType)
 				{
-					c = db.Choiisms.OrderBy(r => Guid.NewGuid()).Take(1).FirstOrDefault();
-				} while (c.ChoiismID == id);
+					case "previous":
+						c = db.Choiisms.FirstOrDefault(r => r.ChoiismID == id - 1);
+						if (c == null) //Loop to the last one
+							c = db.Choiisms.OrderByDescending(r => r.ChoiismID).FirstOrDefault(); //LastOrDefault not supported by EF, order by desc then get the first one.
+						break;
+					case "next":
+						c = db.Choiisms.FirstOrDefault(r => r.ChoiismID == id + 1);
+						if (c == null) //Loop to the first one
+							c = db.Choiisms.FirstOrDefault();
+						break;
+					default: //Get Random by default
+						var citems = db.Choiisms.OrderBy(r => Guid.NewGuid()).Take(2);
+						c = citems.FirstOrDefault();
+						if (c != null && c.ChoiismID == id) //Not null and is the same as what is already displayed, get the next one
+							c = citems.FirstOrDefault(r => r.ChoiismID != id); //Attempt to get the other item if it's there, otherwise just return null.
+						break;
+				}
 
 				return Ok(c);				
 			}
 			catch (Exception)
 			{
-				//return NotFound();
-				throw;
+				return NotFound();
 			}
 		}
 

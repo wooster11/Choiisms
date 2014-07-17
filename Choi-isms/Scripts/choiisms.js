@@ -27,15 +27,16 @@
             return self.caption().length > 0 ? self.caption() : self.value();
     }, this);
 
-    self.getChoiism = function () {
+    self.getChoiism = function (retrievalType) {
         var choiismUrl = 'api/Choiism';
         if (self.ID > 0)
             choiismUrl += '/' + self.ID;
-
+            
         $.ajax({
             type: 'GET',
             url: choiismUrl,
             contentType: 'application/json',
+            data: "retrievalType=" + retrievalType,
             beforeSend: function() {
                 self.appState('loading');
             }
@@ -52,6 +53,8 @@
         .always(function () {
             self.appState('viewing');
         });
+
+        return true;
     }
 
     self.goHome = function () {
@@ -154,4 +157,4 @@
 
 var cvm = new ChoiismViewModel();
 ko.applyBindings(cvm);
-cvm.getChoiism();
+cvm.getChoiism('random');

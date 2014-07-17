@@ -14,7 +14,7 @@
     </div>
     <div class="row" data-bind="if: type() == 'image'">
         <div class="col-xs-12">
-            <a href="#" data-bind="click: getChoiism"><img data-bind="attr: { src: value, alt: caption }" /></a>
+            <a href="#" data-bind="click: function(rt) { getChoiism('next') }"><img data-bind="attr: { src: value, alt: caption }" /></a>
             <br />
             <h1 data-bind="text: caption"></h1>
         </div>
@@ -35,7 +35,9 @@
     <div class="row">
         <div class="col-xs-12">
             <h2>
-                <button class="btn btn-primary" data-bind="click: getChoiism">See Another Choi-ism</button>
+                <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('previous') }">Previous Choi-ism</button>&nbsp;&nbsp;
+                <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('random') }">Random Choi-ism</button>&nbsp;&nbsp;
+                <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('next') }">Next Choi-ism</button>
             </h2>
         </div>
     </div>
