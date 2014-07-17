@@ -21,7 +21,8 @@ namespace Choi_isms.Controllers
 			}
 			catch (Exception)
 			{
-				return NotFound();
+				//return NotFound();
+				throw;
 			}
 		}
 
@@ -39,7 +40,8 @@ namespace Choi_isms.Controllers
 			}
 			catch (Exception)
 			{
-				return NotFound();
+				//return NotFound();
+				throw;
 			}
 		}
 
