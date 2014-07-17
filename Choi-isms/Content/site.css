@@ -1,0 +1,7 @@
+﻿body {
+    padding-top: 120px;
+}
+
+label.label-hover:hover {
+    cursor: pointer;
+}
