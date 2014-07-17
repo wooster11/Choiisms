@@ -14,7 +14,7 @@
     </div>
     <div class="row" data-bind="if: type() == 'image'">
         <div class="col-xs-12">
-            <img data-bind="attr: { src: value, alt: caption }" />
+            <a href="#" data-bind="click: getChoiism"><img data-bind="attr: { src: value, alt: caption }" /></a>
             <br />
             <h1 data-bind="text: caption"></h1>
         </div>
