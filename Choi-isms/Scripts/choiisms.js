@@ -41,11 +41,13 @@
             }
         })
         .done(function (data) {
-            self.ID = data.ChoiismID;
-            self.type(data.ChoiismType);
-            self.value(data.ChoiismValue);
-            self.caption(data.ChoiismCaption);
-            self.submitter("Submitted by " + data.Submitter);
+            if (data != null) {
+                self.ID = data.ChoiismID;
+                self.type(data.ChoiismType);
+                self.value(data.ChoiismValue);
+                self.caption(data.ChoiismCaption);
+                self.submitter("Submitted by " + data.Submitter);
+            }
         })
         .always(function () {
             self.appState('viewing');
