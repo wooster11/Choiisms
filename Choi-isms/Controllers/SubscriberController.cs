@@ -3,6 +3,7 @@ using Choiisms.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -54,6 +55,7 @@ namespace Choiisms.Controllers
 			catch (Exception e)
 			{
 				new LogEvent(200001, e).Raise();
+				Trace.WriteLine(String.Format("200001: {0}", e.Message), "Error");
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
@@ -68,6 +70,7 @@ namespace Choiisms.Controllers
 			catch (Exception e)
 			{
 				new LogEvent(200002, e).Raise();
+				Trace.WriteLine(String.Format("200002: {0}", e.Message), "Error");
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
@@ -88,6 +91,7 @@ namespace Choiisms.Controllers
 			catch (Exception e)
 			{
 				new LogEvent(200003, e).Raise();
+				Trace.WriteLine(String.Format("200003: {0}", e.Message), "Error");
 				return Ok(false);
 			}
 		}

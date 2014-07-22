@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -58,6 +59,7 @@ namespace Choiisms.Controllers
 			catch (Exception e)
 			{
 				new LogEvent(100001, e).Raise();
+				Trace.WriteLine(String.Format("100001: {0}", e.Message), "Error");
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
@@ -95,6 +97,7 @@ namespace Choiisms.Controllers
 			catch (Exception e)
 			{
 				new LogEvent(100002, e).Raise();
+				Trace.WriteLine(String.Format("100002: {0}", e.Message), "Error");
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
