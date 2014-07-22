@@ -22,11 +22,16 @@ namespace Choiisms.Controllers
 		{
 			try
 			{
+				string subEmail;
 				string emailHashString;
 
+				subEmail = jsonSubscriber.GetValue("subscriberEmail").ToString();
+				var bytes = new byte[subEmail.Length * sizeof(char)];
+				System.Buffer.BlockCopy(subEmail.ToCharArray(), 0, bytes, 0, bytes.Length);
+
 				using (var sha = new SHA1Managed())
-				{
-					emailHashString = BitConverter.ToString(sha.ComputeHash(this.GetBytes(jsonSubscriber.GetValue("subscriberEmail").ToString()))).Replace("-", "");
+				{					
+					emailHashString = BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "");
 				}
 
 				//Check to see if this subscriber already exists
@@ -35,7 +40,7 @@ namespace Choiisms.Controllers
 				{
 					sub = new Subscriber();
 					sub.Name = jsonSubscriber.GetValue("subscriberName").ToString();
-					sub.EmailAddress = jsonSubscriber.GetValue("subscriberEmail").ToString();
+					sub.EmailAddress = subEmail;
 					sub.EmailHash = emailHashString;
 					db.Subscribers.Add(sub);
 					db.SaveChanges();
@@ -46,8 +51,9 @@ namespace Choiisms.Controllers
 		
 				return Ok(sub);
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				new LogEvent(200001, e).Raise();
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
@@ -59,8 +65,9 @@ namespace Choiisms.Controllers
 				var subscriber = db.Subscribers.FirstOrDefault(s => s.EmailHash == id);
 				return Ok(subscriber);
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				new LogEvent(200002, e).Raise();
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
@@ -78,17 +85,11 @@ namespace Choiisms.Controllers
 				}
 				return Ok(subscriber);
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				new LogEvent(200003, e).Raise();
 				return Ok(false);
 			}
-		}
-
-		private byte[] GetBytes(string val)
-		{
-			var bytes = new byte[val.Length * sizeof(char)];
-			System.Buffer.BlockCopy(val.ToCharArray(), 0, bytes, 0, bytes.Length);
-			return bytes;
 		}
 
 	}

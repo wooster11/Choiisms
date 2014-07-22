@@ -163,6 +163,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ChoiismController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogEvent.cs" />
     <Compile Include="Controllers\SubscriberController.cs" />
     <Compile Include="DAL\ChoiismContext.cs" />
     <Compile Include="Global.asax.cs">

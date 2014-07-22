@@ -50,8 +50,9 @@ namespace Choiisms.Controllers
 
 				return Ok(c);				
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				new LogEvent(100001, e).Raise();
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
@@ -86,8 +87,9 @@ namespace Choiisms.Controllers
 
 				return Ok(c);
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				new LogEvent(100002, e).Raise();
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
