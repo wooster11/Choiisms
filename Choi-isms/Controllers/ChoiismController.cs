@@ -18,6 +18,11 @@ namespace Choiisms.Controllers
 	{
 		private ChoiismContext db = new ChoiismContext();
 
+		public IHttpActionResult GetChoiism()
+		{
+			return GetChoiism(1, "random");
+		}
+
 		public IHttpActionResult GetChoiism(int id, string retrievalType)
 		{
 			try
