@@ -5,6 +5,7 @@ using System.Web;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Choiisms.Models;
+using Choiisms.Migrations;
 
 namespace Choiisms.DAL
 {
@@ -17,5 +18,10 @@ namespace Choiisms.DAL
 
 		public DbSet<Choiism> Choiisms { get; set; }
 		public DbSet<Subscriber> Subscribers { get; set; }
+
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		{
+			Database.SetInitializer(new MigrateDatabaseToLatestVersion<ChoiismContext, Configuration>());
+		}
 	}
 }
