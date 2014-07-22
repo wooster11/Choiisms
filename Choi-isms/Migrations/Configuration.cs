@@ -34,6 +34,9 @@ namespace Choiisms.Migrations
 				s => s.EmailAddress,
 				new Subscriber() { EmailAddress = "derek.c.woo@gmail.com", Name = "Derek Woo", EmailHash = "F109A467CCF574D1E8EEE25949A9CA2BEEE88F61" }
 				);
+
+			base.Seed(context);
+			context.SaveChanges();
 		}
 	}
 }
