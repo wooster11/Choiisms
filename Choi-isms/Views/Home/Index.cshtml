@@ -104,12 +104,12 @@
 </div>
 @*Subscribing*@
 <div class="row col-xs-offset-2 col-xs-8" data-bind="if: appState() == 'subscribing'">
-    <h2>Get notified when a new Choi-ism is submitted</h2>
     <div data-bind="if: isSubscribedSuccess">
         <div class="alert alert-success" role="alert">
             <button type="button" class="close" data-dismiss="alert" data-bind="click: function() { isSubscribedSuccess(false) }"><span aria-hidden="true">&times;</span></button><span data-bind="text: successSubscriberName"></span>&nbsp;has successfully been subscribed to new Choi-isms!
         </div>
     </div>
+    <h2>Get notified when a new Choi-ism is submitted</h2>
     <form id="subscribeForm" role="form" data-bind="submit: submitSubscriber">
         <div class="form-group" data-bind="css: { 'has-error': isSubscriberNameInvalid }">
             <label class="control-label" for="SubscriberName">Your Name (Required)<span data-bind="visible: isSubscriberNameInvalid">&nbsp;- Your name must be at least 2 characters in length</span></label>
