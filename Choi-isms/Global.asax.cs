@@ -18,7 +18,8 @@ namespace Choiisms
 	{
 		void Application_Start(object sender, EventArgs e)
 		{
-			Database.SetInitializer(new MigrateDatabaseToLatestVersion<ChoiismContext, Configuration>());
+			//Database.SetInitializer(new MigrateDatabaseToLatestVersion<ChoiismContext, Configuration>());
+			Database.SetInitializer(new CreateDatabaseIfNotExists<ChoiismContext>());
 			// Code that runs on application startup
 			AreaRegistration.RegisterAllAreas();
 			BundleConfig.RegisterBundles(BundleTable.Bundles);

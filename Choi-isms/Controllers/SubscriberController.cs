@@ -48,7 +48,7 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception)
 			{
-				throw;
+				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
 
@@ -61,7 +61,7 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception)
 			{
-				return Ok();
+				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
 

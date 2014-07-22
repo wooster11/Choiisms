@@ -52,7 +52,7 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception)
 			{
-				return NotFound();
+				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
 
