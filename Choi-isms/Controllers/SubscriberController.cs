@@ -48,7 +48,7 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception)
 			{
-				return NotFound();
+				throw;
 			}
 		}
 
