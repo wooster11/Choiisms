@@ -1,24 +1,31 @@
-﻿function ChoiismViewModel() {
-    var self = this;
-    self.ID = -1;
-    self.type = ko.observable("");
-    self.value = ko.observable("");
-    self.caption = ko.observable("");
-    self.submitter = ko.observable("");
-    self.appState = ko.observable("loading"); //loading, viewing, submitting
+﻿var choiismViewModel = function () {
+    var self = choiismBase();
+    self.ID = 1;
+    self.type = ko.observable('');
+    self.value = ko.observable('');
+    self.caption = ko.observable('');
+    self.submitter = ko.observable('');
 
-    //Submission form observables
+    //Submit form observables
     self.selectedChoiismType = ko.observable("string");
-    self.submitName = ko.observable("");
+    self.submitName = ko.observable('');
     self.isSubmitNameInvalid = ko.observable(false);
-    self.submitStringChoiismValue = ko.observable("");
+    self.submitStringChoiismValue = ko.observable('');
     self.isSubmitStringChoiismValueInvalid = ko.observable(false);
-    self.submitImageUrl = ko.observable("");
+    self.submitImageUrl = ko.observable('');
     self.isSubmitImageUrlInvalid = ko.observable(false);
-    self.submitImageCaption = ko.observable("");
-    self.submitLinkUrl = ko.observable("");
+    self.submitImageCaption = ko.observable('');
+    self.submitLinkUrl = ko.observable('');
     self.isSubmitLinkUrlInvalid = ko.observable(false);
-    self.submitLinkCaption = ko.observable("");
+    self.submitLinkCaption = ko.observable('');
+
+    //Subscribe form observables
+    self.subscriberName = ko.observable('');
+    self.successSubscriberName = ko.observable('');
+    self.isSubscriberNameInvalid = ko.observable(false);
+    self.subscriberEmail = ko.observable('');
+    self.isSubscriberEmailInvalid = ko.observable(false);
+    self.isSubscribedSuccess = ko.observable(false);
 
     self.linkCaption = ko.computed(function () {
         if (self.caption() == null)
@@ -39,6 +46,7 @@
             data: "retrievalType=" + retrievalType,
             beforeSend: function() {
                 self.appState('loading');
+                self.isNavDisabled(true);
             }
         })
         .done(function (data) {
@@ -52,6 +60,7 @@
         })
         .always(function () {
             self.appState('viewing');
+            self.isNavDisabled(false);
         });
 
         return true;
@@ -60,7 +69,7 @@
     self.goHome = function () {
         self.appState('viewing');
         self.resetSubmitForm();
-        self.selectedChoiismType('string');
+        self.resetSubscribeForm(false);
     }
     
     self.selectedChoiismType.subscribe(function () {
@@ -78,6 +87,7 @@
         self.submitLinkUrl('');
         self.isSubmitLinkUrlInvalid(false);
         self.submitLinkCaption('');
+        self.selectedChoiismType('string');
     }
 
     self.goToSubmit = function () {
@@ -113,7 +123,7 @@
         }
 
         //Validate the submitter name
-        self.isSubmitNameInvalid(self.submitName().length <= 2); //Name must be at least 2 characters long
+        self.isSubmitNameInvalid(self.submitName().length < 2); //Name must be at least 2 characters long
         if (self.isSubmitNameInvalid() && isBaseInputsValid) //Only focus and select on the name if all base inputs were valid and this is the last field that failed
         {
             $('#ChoiismSubmitter').select();
@@ -130,6 +140,7 @@
                 data: ko.toJSON(self),
                 beforeSend: function () {
                     self.appState('saving');
+                    self.isNavDisabled(true);
                 }
             })
             .done(function (data) {
@@ -143,18 +154,75 @@
             })
             .always(function () {
                 self.goHome();
+                self.isNavDisabled(false);
             });
         }
 
         return false; //Return false to prevent actual submitting of form for Knockout
     }
 
+    self.goToSubscribe = function () {
+        self.appState("subscribing");
+    }
+
+    self.resetSubscribeForm = function (keepSuccess) {
+        self.subscriberName('');
+        self.isSubscriberNameInvalid(false);
+        self.subscriberEmail('');
+        self.isSubscriberEmailInvalid(false);
+        self.isSubscribedSuccess(keepSuccess);
+    }
+
+    self.submitSubscriber = function () {
+        self.isSubscriberNameInvalid(self.subscriberName().length < 2);
+        self.isSubscriberEmailInvalid(!self.isEmail(self.subscriberEmail()));
+        if (self.isSubscriberNameInvalid())
+        {
+            $('#SubscriberName').select();
+            $('#SubscriberName').focus();
+            return;
+        }
+        if (self.isSubscriberEmailInvalid())
+        {
+            $('#SubscriberEmail').select();
+            $('#SubscriberEmail').focus();
+            return;
+        }
+
+        var subData = { subscriberName: self.subscriberName(), subscriberEmail: self.subscriberEmail() };
+
+        $.ajax({
+            type: 'POST',
+            url: 'api/Subscriber',
+            contentType: 'application/json',
+            data: ko.toJSON(subData),
+            beforeSend: function () {
+                self.isNavDisabled(true);
+            }
+        })
+        .done(function (data) {
+            if (data != null) {
+                self.isSubscribedSuccess(data.SubscriberID > 0);
+                self.successSubscriberName(self.subscriberName());
+                self.resetSubscribeForm(true);
+            }
+        })
+        .always(function () {
+            self.isNavDisabled(false);
+        });
+    }
+
     self.isUrl = function (urlValue) {
         return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(urlValue);
     }
 
+    self.isEmail = function (emailValue) {
+        return /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(emailValue);
+    }
+
+    return self;
 }
 
-var cvm = new ChoiismViewModel();
+var cvm = choiismViewModel();
 ko.applyBindings(cvm);
 cvm.getChoiism('random');

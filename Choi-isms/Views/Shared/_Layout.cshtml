@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title data-bind="text: textValue"></title>
+    <title>Choi-isms</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/bootstrap")
     @Styles.Render("~/Content/fontawesome")
@@ -23,7 +23,8 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" data-bind="click: goToSubmit">Submit Your Own</a></li>
+                    <li data-bind="css: { disabled: isNavDisabled, active: appState() == 'subscribing' }"><a href="#" data-bind="click: goToSubscribe">Subscribe</a></li>
+                    <li data-bind="css: { disabled: isNavDisabled, active: appState() == 'submitting' }"><a href="#" data-bind="click: goToSubmit">Submit Your Own</a></li>
                 </ul>
             </div>
         </div>
@@ -36,7 +37,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/choiisms")
+    @Scripts.Render("~/bundles/baseScripts")
     @RenderSection("scripts", required: false)
 </body>
 </html>

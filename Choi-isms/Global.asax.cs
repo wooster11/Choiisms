@@ -9,9 +9,9 @@ using System.Web.SessionState;
 using System.Web.Http;
 using System.Web.Optimization;
 using System.Data.Entity;
-using Choi_isms.DAL;
+using Choiisms.DAL;
 
-namespace Choi_isms
+namespace Choiisms
 {
 	public class Global : HttpApplication
 	{

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using Choi_isms.Models;
+using Choiisms.Models;
 
-namespace Choi_isms.DAL
+namespace Choiisms.DAL
 {
 	public class ChoiismContext : DbContext
 	{
@@ -16,5 +16,6 @@ namespace Choi_isms.DAL
 		}
 
 		public DbSet<Choiism> Choiisms { get; set; }
+		public DbSet<Subscriber> Subscribers { get; set; }
 	}
 }

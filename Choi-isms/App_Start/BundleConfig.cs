@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Optimization;
 
-namespace Choi_isms
+namespace Choiisms
 {
 	public class BundleConfig
 	{
@@ -23,8 +23,14 @@ namespace Choi_isms
 						"~/Scripts/bootstrap.js",
 						"~/Scripts/respond.js"));
 
+			bundles.Add(new ScriptBundle("~/bundles/baseScripts").Include(
+						"~/Scripts/choiismBase.js"));
+
 			bundles.Add(new ScriptBundle("~/bundles/choiisms").Include(
 						"~/Scripts/choiisms.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/unsubscribe").Include(
+						"~/Scripts/unsubscribe.js"));
 
 			//CSS Bundles
 			bundles.Add(new StyleBundle("~/Content/css").Include(

@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Choi_isms.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Choiisms.Global" Language="C#" %>

@@ -1,4 +1,5 @@
-﻿<div class="text-center" data-bind="if: appState() == 'loading' || appState() == 'saving'">
+﻿@*Loading and Saving*@
+<div class="text-center" data-bind="if: appState() == 'loading' || appState() == 'saving'">
     <div class="row"><i class="fa fa-spinner fa-spin fa-5x"></i></div>
     <br />
     <div class="row">
@@ -6,97 +7,124 @@
         <span class="fa-lg" data-bind="if: appState() == 'saving'">Saving...</span>
     </div>
 </div>
+@*Viewing*@
 <div class="text-center" data-bind="if: appState() == 'viewing'">
-    <div class="row" data-bind="if: type() == 'string'">
-        <div class="col-xs-12">
-            <h1 data-bind="text: value"></h1>
+    <div class="main-content"> @*Viewing main-content - for additional padding*@
+        <div class="row" data-bind="if: type() == 'string'">
+            <div class="col-xs-12">
+                <h1 data-bind="text: value"></h1>
+            </div>
         </div>
-    </div>
-    <div class="row" data-bind="if: type() == 'image'">
-        <div class="col-xs-12">
-            <a href="#" data-bind="click: function(rt) { getChoiism('next') }"><img data-bind="attr: { src: value, alt: caption }" /></a>
-            <br />
-            <h1 data-bind="text: caption"></h1>
+        <div class="row" data-bind="if: type() == 'image'">
+            <div class="col-xs-12">
+                <a href="#" data-bind="click: function(rt) { getChoiism('next') }"><img data-bind="attr: { src: value, alt: caption }" /></a>
+                <br />
+                <h1 data-bind="text: caption"></h1>
+            </div>
         </div>
-    </div>
-    <div class="row" data-bind="if: type() == 'link'">
-        <div class="col-xs-12">
-           <a data-bind="attr: { href: value }">
-               <h1 data-bind="text: linkCaption"></h1>
-               <p>(<span data-bind="text: value"></span>)</p>
-           </a>
+        <div class="row" data-bind="if: type() == 'link'">
+            <div class="col-xs-12">
+                <a data-bind="attr: { href: value }">
+                    <h1 data-bind="text: linkCaption"></h1>
+                    <p>(<span data-bind="text: value"></span>)</p>
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <small><em data-bind="text: submitter"></em></small>
+        <div class="row">
+            <div class="col-xs-12">
+                <small><em data-bind="text: submitter"></em></small>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <h2>
+        <div class="row main-content-buttons">
+            <div class="col-xs-12">
                 <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('previous') }">Previous Choi-ism</button>&nbsp;&nbsp;
                 <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('random') }">Random Choi-ism</button>&nbsp;&nbsp;
                 <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('next') }">Next Choi-ism</button>
-            </h2>
+            </div>
         </div>
     </div>
 </div>
-<div class="row" data-bind="if: appState() == 'submitting'">
-    <div class="row col-xs-offset-2 col-xs-8">
-        <form id="submitChoiismForm" role="form" data-bind="submit: submitChoiism">
-            <div class="form-group">
-                <label for="ChoiisimType">What kind of Choi-ism are you submitting?</label>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="ChoiismTypeRadios" id="ChoiismSaying" value="string" data-bind="checked: selectedChoiismType" checked />
-                        Choi-ism Saying - Your typical Choi-ism -S omething Choi said or something that reminds you of him
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="ChoiismTypeRadios" id="ChoiismImage" value="image" data-bind="checked: selectedChoiismType" />
-                        Image - A picture that defines who Choi is
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="ChoiismTypeRadios" id="ChoiismLink" value="link" data-bind="checked: selectedChoiismType" />
-                        Link - A link to something Choi
-                    </label>
-                </div>
+@*Submitting*@
+<div class="row col-xs-offset-2 col-xs-8" data-bind="if: appState() == 'submitting'">
+    <h2>Submit your own Choi-ism</h2>
+    <form id="submitChoiismForm" role="form" data-bind="submit: submitChoiism">
+        <div class="form-group">
+            <label for="ChoiisimType">What kind of Choi-ism are you submitting?</label>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="ChoiismTypeRadios" id="ChoiismSaying" value="string" data-bind="checked: selectedChoiismType" checked />
+                    Choi-ism Saying - Your typical Choi-ism - Something Choi said or something that reminds you of him
+                </label>
             </div>
-            <div class="form-group" data-bind="if: selectedChoiismType() == 'string', css: { 'has-error': isSubmitStringChoiismValueInvalid }">
-                <label class="control-label" for="ChoiismStringValue">Choi-ism Saying (Required)<span data-bind="visible: isSubmitStringChoiismValueInvalid">&nbsp;- Your Choi-ism must be at least 5 characters in length</span></label>
-                <input type="text" class="form-control" id="ChoiismStringValue" placeholder="Enter Choiism Here" data-bind="value: submitStringChoiismValue" />
+            <div class="radio">
+                <label>
+                    <input type="radio" name="ChoiismTypeRadios" id="ChoiismImage" value="image" data-bind="checked: selectedChoiismType" />
+                    Image - A picture that defines who Choi is
+                </label>
             </div>
-            <div data-bind="if: selectedChoiismType() == 'image'">
-                <div class="form-group" data-bind="css: { 'has-error': isSubmitImageUrlInvalid }">
-                    <label class="control-label" for="ChoiismImageUrl">Image URL (Required)<span data-bind="visible: isSubmitImageUrlInvalid">&nbsp;- Image URL is required and must be a valid URL</span></label>
-                    <input type="text" class="form-control" id="ChoiismImageUrl" placeholder="http://imgur.com/<imagelink>" data-bind="value: submitImageUrl" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="ChoiismImageCaption">Image Caption (Optional)</label>
-                    <input type="text" class="form-control" id="ChoiismImageCaption" placeholder="Enter Caption Here" data-bind="value: submitImageCaption" />
-                </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="ChoiismTypeRadios" id="ChoiismLink" value="link" data-bind="checked: selectedChoiismType" />
+                    Link - A link to something Choi
+                </label>
             </div>
-            <div data-bind="if: selectedChoiismType() == 'link'">
-                <div class="form-group" data-bind="css: { 'has-error': isSubmitLinkUrlInvalid }">
-                    <label class="control-label" for="ChoiismLinkUrl">Link URL (Required)<span data-bind="visible: isSubmitLinkUrlInvalid">&nbsp;- Link URL is required and must be a valid URL</span></label>
-                    <input type="url" class="form-control" id="ChoiismLinkUrl" placeholder="http://choiisms.apphb.com" data-bind="value: submitLinkUrl" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="ChoiismLinkCaption">Link Caption (Optional)</label>
-                    <input type="text" class="form-control" id="ChoiismLinkCaption" placeholder="Enter Caption Here" data-bind="value: submitLinkCaption" />
-                </div>
-            </div>
-            <div class="form-group" data-bind="css: { 'has-error': isSubmitNameInvalid }">
-                <label class="control-label" for="ChoiismSubmitter">Your Name (Required)<span data-bind="visible: isSubmitNameInvalid">&nbsp;- Your name must be at least 2 characters in length</span></label>
-                <input type="text" class="form-control" id="ChoiismSubmitter" placeholder="Enter Your Name Here" data-bind="value: submitName" />
+        </div>
+        <div class="form-group" data-bind="if: selectedChoiismType() == 'string', css: { 'has-error': isSubmitStringChoiismValueInvalid }">
+            <label class="control-label" for="ChoiismStringValue">Choi-ism Saying (Required)<span data-bind="visible: isSubmitStringChoiismValueInvalid">&nbsp;- Your Choi-ism must be at least 5 characters in length</span></label>
+            <input type="text" class="form-control" id="ChoiismStringValue" placeholder="Enter Choiism Here" data-bind="value: submitStringChoiismValue" />
+        </div>
+        <div data-bind="if: selectedChoiismType() == 'image'">
+            <div class="form-group" data-bind="css: { 'has-error': isSubmitImageUrlInvalid }">
+                <label class="control-label" for="ChoiismImageUrl">Image URL (Required)<span data-bind="visible: isSubmitImageUrlInvalid">&nbsp;- Image URL is required and must be a valid URL</span></label>
+                <input type="text" class="form-control" id="ChoiismImageUrl" placeholder="http://imgur.com/<imagelink>" data-bind="value: submitImageUrl" />
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Submit Your Choi-ism!</button>
+                <label class="control-label" for="ChoiismImageCaption">Image Caption (Optional)</label>
+                <input type="text" class="form-control" id="ChoiismImageCaption" placeholder="Enter Caption Here" data-bind="value: submitImageCaption" />
             </div>
-        </form>
-    </div>
+        </div>
+        <div data-bind="if: selectedChoiismType() == 'link'">
+            <div class="form-group" data-bind="css: { 'has-error': isSubmitLinkUrlInvalid }">
+                <label class="control-label" for="ChoiismLinkUrl">Link URL (Required)<span data-bind="visible: isSubmitLinkUrlInvalid">&nbsp;- Link URL is required and must be a valid URL</span></label>
+                <input type="url" class="form-control" id="ChoiismLinkUrl" placeholder="http://choiisms.apphb.com" data-bind="value: submitLinkUrl" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="ChoiismLinkCaption">Link Caption (Optional)</label>
+                <input type="text" class="form-control" id="ChoiismLinkCaption" placeholder="Enter Caption Here" data-bind="value: submitLinkCaption" />
+            </div>
+        </div>
+        <div class="form-group" data-bind="css: { 'has-error': isSubmitNameInvalid }">
+            <label class="control-label" for="ChoiismSubmitter">Your Name (Required)<span data-bind="visible: isSubmitNameInvalid">&nbsp;- Your name must be at least 2 characters in length</span></label>
+            <input type="text" class="form-control" id="ChoiismSubmitter" placeholder="Enter Your Name Here" data-bind="value: submitName" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit Your Choi-ism!</button>
+        </div>
+    </form>
 </div>
+@*Subscribing*@
+<div class="row col-xs-offset-2 col-xs-8" data-bind="if: appState() == 'subscribing'">
+    <h2>Get notified when a new Choi-ism is submitted</h2>
+    <div data-bind="if: isSubscribedSuccess">
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert" data-bind="click: function() { isSubscribedSuccess(false) }"><span aria-hidden="true">&times;</span></button><span data-bind="text: successSubscriberName"></span>&nbsp;has successfully been subscribed to new Choi-isms!
+        </div>
+    </div>
+    <form id="subscribeForm" role="form" data-bind="submit: submitSubscriber">
+        <div class="form-group" data-bind="css: { 'has-error': isSubscriberNameInvalid }">
+            <label class="control-label" for="SubscriberName">Your Name (Required)<span data-bind="visible: isSubscriberNameInvalid">&nbsp;- Your name must be at least 2 characters in length</span></label>
+            <input type="text" class="form-control" id="SubscriberName" placeholder="Enter Your Name Here" data-bind="value: subscriberName" />
+        </div>
+        <div class="form-group" data-bind="css: { 'has-error': isSubscriberEmailInvalid }">
+            <label class="control-label" for="SubscriberEmail">Your Email Address (Required)<span data-bind="visible: isSubscriberEmailInvalid">&nbsp;- Email is required and must be a valid email address</span></label>
+            <input type="text" class="form-control" id="SubscriberEmail" placeholder="Enter your Email Address" data-bind="value: subscriberEmail" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+        </div>
+    </form>
+</div>
+@*Apply Choiism ViewModel to Knockout Bindings with Document Ready Script*@
+@section scripts {
+    @Scripts.Render("~/bundles/choiisms")
+}

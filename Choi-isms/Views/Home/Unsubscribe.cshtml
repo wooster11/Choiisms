@@ -1,0 +1,36 @@
+﻿@model Choiisms.Models.Subscriber
+
+@*Loading and Saving*@
+<div class="text-center" data-bind="if: appState() == 'loading' || appState() == 'saving'">
+    <div class="row"><i class="fa fa-spinner fa-spin fa-5x"></i></div>
+    <br />
+    <div class="row">
+        <span class="fa-lg" data-bind="if: appState() == 'loading'">Loading...</span>
+        <span class="fa-lg" data-bind="if: appState() == 'saving'">Unsubcribing...</span>
+    </div>
+</div>
+@*Ask to verify Unsubscribe*@
+<div data-bind="if: appState() == 'unsubscribing'">
+    <div class="row col-xs-offset-2 col-xs-8">
+        <h2>
+            Are you sure you want to unsubcribe <strong><em><span class="text-info">@Html.DisplayTextFor(m => m.EmailAddress)</span></em></strong> from receiving Choi-ism Notifications?
+        </h2>
+        <div class="form-group main-content-buttons">
+            <button type="button" class="btn btn-primary" data-bind="click: function() { submitUnsubscribe('@Html.DisplayTextFor(m => m.EmailHash)') }">Unsubscribe</button>
+        </div>
+        <div class="form-group">
+            <small><a href="~/">J/K! Take me back to Choi-isms</a></small>
+        </div>
+    </div>
+</div>
+@*Unsubscribe Confirmation*@
+<div data-bind="if: appState() == 'confirmUnsubscribe'">
+    <div class="row col-xs-offset-2 col-xs-8">
+        <h2><strong><em><span class="text-info">@Html.DisplayTextFor(m => m.EmailAddress)</span></em></strong> has been successfully unsubscribed from Choi-ism Notifications.</h2>
+        <a href="~/" class="btn btn-primary">Take me back to Choi-isms</a>
+    </div>
+</div>
+@*Apply Unsubscribe ViewModel to Knockout Bindings*@
+@section scripts {
+    @Scripts.Render("~/bundles/unsubscribe")
+}
