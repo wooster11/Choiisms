@@ -32,6 +32,9 @@ namespace Choiisms
 			bundles.Add(new ScriptBundle("~/bundles/unsubscribe").Include(
 						"~/Scripts/unsubscribe.js"));
 
+			bundles.Add(new ScriptBundle("~/bundles/error").Include(
+						"~/Scripts/error.js"));
+
 			//CSS Bundles
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 						"~/Content/site.css"));

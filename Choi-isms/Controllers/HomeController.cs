@@ -34,5 +34,10 @@ namespace Choiisms.Controllers
 				
 		}
 
+		public ActionResult Error()
+		{
+			return View();
+		}
+
 	}
 }

@@ -1,0 +1,16 @@
+﻿<div class="row">
+    <div class="col-xs-6 text-right vcenter">
+        <img src="~/Content/Images/ChoiHideShow.gif" alt="Whoops! Choi's not here. Or is he?" />
+    </div><!-- get rid of extra space caused by inline-block css here by commenting out any real space between the divs
+    --><div class="col-xs-6 text-left vcenter">
+        <h1><strong>Whoops! Choi's not here</strong></h1>
+        <h4 class="text-muted"><em>...or is he?</em></h4>
+    </div>
+</div>
+<div class="row main-content text-center">
+    <a href="/">Back to Choi-ism's</a>
+</div>
+@*Apply Error ViewModel to Knockout Bindings*@
+@section scripts {
+    @Scripts.Render("~/bundles/error")
+}
