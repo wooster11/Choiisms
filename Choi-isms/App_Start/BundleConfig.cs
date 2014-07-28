@@ -23,21 +23,18 @@ namespace Choiisms
 						"~/Scripts/bootstrap.js",
 						"~/Scripts/respond.js"));
 
-			bundles.Add(new ScriptBundle("~/bundles/baseScripts").Include(
-						"~/Scripts/choiismBase.js"));
+			bundles.Add(new ScriptBundle("~/bundles/baseScripts").Include("~/Scripts/choiismBase.js"));
 
-			bundles.Add(new ScriptBundle("~/bundles/choiisms").Include(
-						"~/Scripts/choiisms.js"));
+			bundles.Add(new ScriptBundle("~/bundles/choiisms").Include("~/Scripts/choiisms.js"));
 
-			bundles.Add(new ScriptBundle("~/bundles/unsubscribe").Include(
-						"~/Scripts/unsubscribe.js"));
+			bundles.Add(new ScriptBundle("~/bundles/unsubscribe").Include("~/Scripts/unsubscribe.js"));
 
-			bundles.Add(new ScriptBundle("~/bundles/error").Include(
-						"~/Scripts/error.js"));
+			bundles.Add(new ScriptBundle("~/bundles/error").Include("~/Scripts/error.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/admin").Include("~/Scripts/admin.js"));
 
 			//CSS Bundles
-			bundles.Add(new StyleBundle("~/Content/css").Include(
-						"~/Content/site.css"));
+			bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
 			bundles.Add(new StyleBundle("~/Content/bootstrap", "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css").Include(
 						"~/Content/bootstrap.css"));

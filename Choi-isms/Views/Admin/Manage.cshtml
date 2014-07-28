@@ -1,0 +1,72 @@
+﻿<div class="col-xs-8 col-xs-offset-2">
+    <div class="row">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active" data-bind="css: { active: activeTab() == 'choiisms' }"><a href="#" id="choiisms" data-bind="click: tabClicked">Choi-isms</a></li>
+            <li class="" data-bind="css: { active: activeTab() == 'subscribers' }"><a href="#" id="subscribers" data-bind="click: tabClicked">Subscribers</a></li>
+        </ul>
+    </div>
+    <div class="row text-center" data-bind="if: appState() == 'loading' || appState() == 'saving'">
+        <div class="main-content">
+            <div class="row"><i class="fa fa-spinner fa-spin fa-5x"></i></div>
+            <br />
+            <div class="row">
+                <span class="fa-lg" data-bind="if: appState() == 'loading'">Loading...</span>
+                <span class="fa-lg" data-bind="if: appState() == 'saving'">Saving...</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" data-bind="if: activeTab() == 'choiisms' && appState() == 'viewing'">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Caption</th>
+                    <th>Submitter</th>
+                </tr>
+            </thead>
+            <tbody data-bind ="foreach: choiisms">
+                <tr>
+                    <td data-bind="text: ID"></td>
+                    <td data-bind="text: type"></td>
+                    <td data-bind="text: value"></td>
+                    <td data-bind="text: caption"></td>
+                    <td data-bind="text: submitter"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row" data-bind="if: activeTab() == 'subscribers' && appState() == 'viewing'">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email Address</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: subscribers">
+                <tr>
+                    <td data-bind="text: ID"></td>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: email"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row" data-bind="if: appState() == 'viewing'">
+        <ul class="pagination">
+            <li data-bind="css: { disabled: !hasPrevious()}"><a id="previous" href="#" data-bind="click: goToPageByDirection, css: { disabled: !hasPrevious() }">&laquo;</a></li>
+            <!-- ko foreach: pageLinks -->
+            <li data-bind="css: { active: isActive }"><a href="#" data-bind="text: pageNumber, click: $root.pageLinkClicked"></a></li>
+            <!-- /ko -->
+            @*<li data-bind="css: { disabled: !hasNext()}"><a id="next" href="#" data-bind="click: goToPageByDirection, css: { disabled: !hasPrevious() }">&raquo;</a></li>*@
+            <li data-bind="css: { disabled: !hasNext()}"><a id="next" href="#" data-bind="click: goToPageByDirection, css: { disabled: !hasPrevious() }">&raquo;</a></li>
+        </ul>
+    </div>
+</div>
+@*Apply Admin ViewModel to Knockout Bindings*@
+@section scripts {
+    @Scripts.Render("~/bundles/admin")
+}

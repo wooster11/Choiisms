@@ -7,17 +7,23 @@ using System.Web.Routing;
 
 namespace Choiisms
 {
-    public class RouteConfig
-    {
-        public static void RegisterRoutes(RouteCollection routes)
-        {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+	public class RouteConfig
+	{
+		public static void RegisterRoutes(RouteCollection routes)
+		{
+			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
-        }
-    }
+			routes.MapRoute(
+				name: "Admin",
+				url: "Admin/{action}",
+				defaults: new { controller = "Admin", action = "Index" }
+			);
+
+			routes.MapRoute(
+				name: "Default",
+				url: "{action}/{id}",
+				defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+			);			
+		}
+	}
 }

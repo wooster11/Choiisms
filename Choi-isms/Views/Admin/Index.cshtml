@@ -1,0 +1,24 @@
+﻿@model Choiisms.Models.Admin
+
+<div class="col-xs-4 col-xs-offset-4">
+    <div data-bind="if: @Html.DisplayTextFor(m => m.IsLoginFailed)">
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>Login has failed. Please try again.
+        </div>
+    </div>
+    <form role="form" method="post" action="/Admin/Manage">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" />
+        </div>
+        <button type="submit" class="btn btn-default">Login</button>
+    </form>
+</div>
+@*Apply Admin ViewModel to Knockout Bindings*@
+@section scripts {
+    @Scripts.Render("~/bundles/admin")
+}

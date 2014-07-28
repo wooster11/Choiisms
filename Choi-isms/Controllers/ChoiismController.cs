@@ -1,4 +1,5 @@
-﻿using Choiisms.DAL;
+﻿using Choiisms.Core;
+using Choiisms.DAL;
 using Choiisms.Models;
 using Newtonsoft.Json.Linq;
 using System;
@@ -64,6 +65,20 @@ namespace Choiisms.Controllers
 			}
 		}
 
+		public IHttpActionResult GetChoiismList(int pageNum)
+		{
+			try
+			{
+				return Ok(new PagedList<Choiism>(db.Choiisms.OrderBy(c => c.ChoiismID), pageNum));
+			}
+			catch (Exception e)
+			{
+				new LogEvent(100002, e).Raise();
+				Trace.WriteLine(String.Format("100002: {0}", e.Message), "Error");
+				return StatusCode(HttpStatusCode.InternalServerError);
+			}
+		}
+
 		public IHttpActionResult PostChoiism(JObject jsonChoiism)
 		{
 			try
@@ -96,8 +111,8 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception e)
 			{
-				new LogEvent(100002, e).Raise();
-				Trace.WriteLine(String.Format("100002: {0}", e.Message), "Error");
+				new LogEvent(100003, e).Raise();
+				Trace.WriteLine(String.Format("100003: {0}", e.Message), "Error");
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}

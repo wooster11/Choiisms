@@ -9,38 +9,28 @@
 </div>
 @*Viewing*@
 <div class="text-center" data-bind="if: appState() == 'viewing'">
-    <div class="main-content"> @*Viewing main-content - for additional padding*@
+    <div class="main-content col-xs-12"> @*Viewing main-content - for additional padding*@
         <div class="row" data-bind="if: type() == 'string'">
-            <div class="col-xs-12">
-                <h1 data-bind="text: value"></h1>
-            </div>
+            <h1 data-bind="text: value"></h1>
         </div>
         <div class="row" data-bind="if: type() == 'image'">
-            <div class="col-xs-12">
-                <a href="#" data-bind="click: function(rt) { getChoiism('next') }"><img data-bind="attr: { src: value, alt: caption }" /></a>
-                <br />
-                <h1 data-bind="text: caption"></h1>
-            </div>
+            <a href="#" data-bind="click: function(rt) { getChoiism('next') }"><img data-bind="attr: { src: value, alt: caption }" /></a>
+            <br />
+            <h1 data-bind="text: caption"></h1>
         </div>
         <div class="row" data-bind="if: type() == 'link'">
-            <div class="col-xs-12">
-                <a data-bind="attr: { href: value }">
-                    <h1 data-bind="text: linkCaption"></h1>
-                    <p>(<span data-bind="text: value"></span>)</p>
-                </a>
-            </div>
+            <a data-bind="attr: { href: value }">
+                <h1 data-bind="text: linkCaption"></h1>
+                <p>(<span data-bind="text: value"></span>)</p>
+            </a>
         </div>
         <div class="row">
-            <div class="col-xs-12">
-                <small><em data-bind="text: submitter"></em></small>
-            </div>
+            <small><em data-bind="text: submitter"></em></small>
         </div>
         <div class="row main-content-buttons">
-            <div class="col-xs-12">
-                <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('previous') }">Previous Choi-ism</button>&nbsp;&nbsp;
-                <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('random') }">Random Choi-ism</button>&nbsp;&nbsp;
-                <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('next') }">Next Choi-ism</button>
-            </div>
+            <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('previous') }">Previous Choi-ism</button>&nbsp;&nbsp;
+            <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('random') }">Random Choi-ism</button>&nbsp;&nbsp;
+            <button class="btn btn-primary" data-bind="click: function(rt) { getChoiism('next') }">Next Choi-ism</button>
         </div>
     </div>
 </div>

@@ -12,6 +12,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using Choiisms.Core;
 
 namespace Choiisms.Controllers
 {
@@ -71,6 +72,20 @@ namespace Choiisms.Controllers
 			{
 				new LogEvent(200002, e).Raise();
 				Trace.WriteLine(String.Format("200002: {0}", e.Message), "Error");
+				return StatusCode(HttpStatusCode.InternalServerError);
+			}
+		}
+
+		public IHttpActionResult GetSubscriberList(int pageNum)
+		{
+			try
+			{
+				return Ok(new PagedList<Subscriber>(db.Subscribers.OrderBy(s => s.SubscriberID), pageNum));
+			}
+			catch (Exception e)
+			{
+				new LogEvent(200003, e).Raise();
+				Trace.WriteLine(String.Format("200003: {0}", e.Message), "Error");
 				return StatusCode(HttpStatusCode.InternalServerError);
 			}
 		}
