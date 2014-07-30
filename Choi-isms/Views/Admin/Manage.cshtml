@@ -1,4 +1,14 @@
 ﻿<div class="col-xs-8 col-xs-offset-2">
+    <div data-bind="if: isChangesSaved">
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="close" data-dismiss="alert" data-bind="click: dismissChangesSavedAlert"><span aria-hidden="true">&times;</span></button>Changes successfully saved.
+        </div>
+    </div>
+    <div data-bind="if: isChangesFailed">
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="close" data-dismiss="alert" data-bind="click: dismissChangesFailedAlert"><span aria-hidden="true">&times;</span></button>An error occurred when trying to save the changes.
+        </div>
+    </div>
     <div class="row">
         <ul class="nav nav-tabs" role="tablist">
             <li class="active" data-bind="css: { active: activeTab() == 'choiisms' }"><a href="#" id="choiisms" data-bind="click: tabClicked">Choi-isms</a></li>
@@ -16,7 +26,7 @@
         </div>
     </div>
     <div class="row" data-bind="if: activeTab() == 'choiisms' && appState() == 'viewing'">
-        <table class="table table-hover">
+        <table class="table table-hover vert-align">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -24,46 +34,74 @@
                     <th>Value</th>
                     <th>Caption</th>
                     <th>Submitter</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody data-bind ="foreach: choiisms">
                 <tr>
                     <td data-bind="text: ID"></td>
                     <td data-bind="text: type"></td>
-                    <td data-bind="text: value"></td>
-                    <td data-bind="text: caption"></td>
-                    <td data-bind="text: submitter"></td>
+                    <td>
+                        <span id="value" data-bind="text: value, visible: !isEditValue(), click: editText"></span>
+                        <input type="text" class="form-control" data-bind="value: value, visible: isEditValue, hasSelectedFocus: isEditValue, event: { change: $parent.textChanged }" />
+                    </td>
+                    <td>
+                        <span id="caption" data-bind="text: caption, visible: !isEditCaption(), click: editText"></span>
+                        <input type="text" class="form-control" data-bind="value: caption, visible: isEditCaption, hasSelectedFocus: isEditCaption, event: { change: $parent.textChanged }" />
+                    </td>
+                    <td>
+                        <span id="submitter" data-bind="text: submitter, visible: !isEditSubmitter(), click: editText"></span>
+                        <input type="text" class="form-control" data-bind="value: submitter, visible: isEditSubmitter, hasSelectedFocus: isEditSubmitter, event: { change: $parent.textChanged }" />
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" data-bind="click: $parent.deleteChoiism">Delete</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="row" data-bind="if: activeTab() == 'subscribers' && appState() == 'viewing'">
-        <table class="table table-hover">
+        <table class="table table-hover vert-align">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email Address</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody data-bind="foreach: subscribers">
                 <tr>
                     <td data-bind="text: ID"></td>
-                    <td data-bind="text: name"></td>
-                    <td data-bind="text: email"></td>
+                    <td>
+                        <span id="name" data-bind="text: name, visible: !isEditName(), click: editText"></span>
+                        <input type="text" class="form-control" data-bind="value: name, visible: isEditName, event: { change: $parent.textChanged }" />
+                    </td>
+                    <td>
+                        <span id="email" data-bind="text: email, visible: !isEditEmail(), click: editText"></span>
+                        <input type="text" class="form-control" data-bind="value: email, visible: isEditEmail, event: { change: $parent.textChanged }" />
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" data-bind="click: $parent.deleteSubscriber">Delete</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="row" data-bind="if: appState() == 'viewing'">
-        <ul class="pagination">
-            <li data-bind="css: { disabled: !hasPrevious()}"><a id="previous" href="#" data-bind="click: goToPageByDirection, css: { disabled: !hasPrevious() }">&laquo;</a></li>
-            <!-- ko foreach: pageLinks -->
-            <li data-bind="css: { active: isActive }"><a href="#" data-bind="text: pageNumber, click: $root.pageLinkClicked"></a></li>
-            <!-- /ko -->
-            @*<li data-bind="css: { disabled: !hasNext()}"><a id="next" href="#" data-bind="click: goToPageByDirection, css: { disabled: !hasPrevious() }">&raquo;</a></li>*@
-            <li data-bind="css: { disabled: !hasNext()}"><a id="next" href="#" data-bind="click: goToPageByDirection, css: { disabled: !hasPrevious() }">&raquo;</a></li>
-        </ul>
+        <div class="col-xs-10 text-left vcenter">
+            <ul class="pagination">
+                <li data-bind="css: { disabled: !hasPrevious()}"><a id="previous" href="#" data-bind="click: goToPageByDirection, css: { disabled: !hasPrevious() }">&laquo;</a></li>
+                <!-- ko foreach: pageLinks -->
+                <li data-bind="css: { active: isActive }"><a href="#" data-bind="text: pageNumber, click: $root.pageLinkClicked"></a></li>
+                <!-- /ko -->
+                @*<li data-bind="css: { disabled: !hasNext()}"><a id="next" href="#" data-bind="click: goToPageByDirection, css: { disabled: !hasPrevious() }">&raquo;</a></li>*@
+                <li data-bind="css: { disabled: !hasNext()}"><a id="next" href="#" data-bind="click: goToPageByDirection, css: { disabled: !hasPrevious() }">&raquo;</a></li>
+            </ul>
+        </div><!-- get rid of extra space caused by inline-block css here by commenting out any real space between the divs
+        --><div class="col-xs-2 text-right vcenter">
+            <button class="btn btn-primary" data-bind="enable: isDirty, click: saveChanges">Save Changes</button>
+        </div>
     </div>
 </div>
 @*Apply Admin ViewModel to Knockout Bindings*@

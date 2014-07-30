@@ -172,6 +172,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogEvent.cs" />
     <Compile Include="Controllers\SubscriberController.cs" />
+    <Compile Include="Core\ErrorHandler.cs" />
     <Compile Include="Core\PagedList.cs" />
     <Compile Include="DAL\ChoiismContext.cs" />
     <Compile Include="Global.asax.cs">

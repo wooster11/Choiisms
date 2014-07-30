@@ -1,10 +1,8 @@
 ﻿using Choiisms.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Choiisms.Controllers
 {
@@ -20,10 +18,12 @@ namespace Choiisms.Controllers
 		{
 			var adminModel = new Admin() { Username = username, IsLoginFailed = true };
 
-			if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password) ||
-				username != ConfigurationManager.AppSettings["adminUser"] || password != ConfigurationManager.AppSettings["adminPassword"])
+			//No username or password or they mismatch, just go back to the login screen and display failed message
+			if (String.IsNullOrWhiteSpace(username) || String.IsNullOrWhiteSpace(password) || username != ConfigurationManager.AppSettings["adminUser"] || password != ConfigurationManager.AppSettings["adminPassword"])
 				return View("Index", adminModel);
 
+			//User login is successful, so set the cookie as needed
+			FormsAuthentication.SetAuthCookie(username, false);
 			adminModel.IsLoginFailed = false;
 			return View();
 		}

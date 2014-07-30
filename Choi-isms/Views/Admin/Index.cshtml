@@ -21,4 +21,12 @@
 @*Apply Admin ViewModel to Knockout Bindings*@
 @section scripts {
     @Scripts.Render("~/bundles/admin")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#username').focus();
+        });
+    </script>
 }
+
+

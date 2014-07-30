@@ -15,3 +15,7 @@ div.vcenter {
     vertical-align: middle;
     float: none;
 }
+
+table.vert-align * td {
+    vertical-align: middle !important;
+}

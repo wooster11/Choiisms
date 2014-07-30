@@ -3,12 +3,8 @@ using Choiisms.DAL;
 using Choiisms.Models;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
 using System.Web;
@@ -59,9 +55,7 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception e)
 			{
-				new LogEvent(100001, e).Raise();
-				Trace.WriteLine(String.Format("100001: {0}", e.Message), "Error");
-				return StatusCode(HttpStatusCode.InternalServerError);
+				return ErrorHandler.HandleError(100001, e, this);
 			}
 		}
 
@@ -73,9 +67,7 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception e)
 			{
-				new LogEvent(100002, e).Raise();
-				Trace.WriteLine(String.Format("100002: {0}", e.Message), "Error");
-				return StatusCode(HttpStatusCode.InternalServerError);
+				return ErrorHandler.HandleError(100002, e, this);
 			}
 		}
 
@@ -111,9 +103,48 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception e)
 			{
-				new LogEvent(100003, e).Raise();
-				Trace.WriteLine(String.Format("100003: {0}", e.Message), "Error");
-				return StatusCode(HttpStatusCode.InternalServerError);
+				return ErrorHandler.HandleError(100003, e, this);
+			}
+		}
+
+		[Authorize]
+		public IHttpActionResult DeleteChoiism(int id)
+		{
+			try
+			{
+				var ch = db.Choiisms.Remove(db.Choiisms.First(c => c.ChoiismID == id));
+				db.SaveChanges();
+
+				return Ok(ch);
+			}
+			catch (Exception e)
+			{
+				return ErrorHandler.HandleError(100004, e, this);
+			}
+		}
+
+		[Authorize]
+		public IHttpActionResult PutChoiism(JObject jsonChangedChoiisms)
+		{
+			try
+			{
+				foreach (JToken jt in jsonChangedChoiisms.GetValue("changedItems").AsEnumerable())
+				{
+					var id = Convert.ToInt32(jt["ID"]);
+					var choiism = db.Choiisms.First(c => c.ChoiismID == id);
+					choiism.ChoiismType = jt["type"].ToString();
+					choiism.ChoiismValue = jt["value"].ToString();
+					choiism.ChoiismCaption = jt["caption"].ToString();
+					choiism.Submitter = jt["submitter"].ToString();
+				}
+
+				db.SaveChanges();
+
+				return Ok();
+			}
+			catch (Exception e)
+			{
+				return ErrorHandler.HandleError(100005, e, this);
 			}
 		}
 

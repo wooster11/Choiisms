@@ -1,18 +1,12 @@
-﻿using Choiisms.DAL;
+﻿using Choiisms.Core;
+using Choiisms.DAL;
 using Choiisms.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Security.Cryptography;
-using System.Text;
-using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
-using Choiisms.Core;
 
 namespace Choiisms.Controllers
 {
@@ -24,18 +18,9 @@ namespace Choiisms.Controllers
 		{
 			try
 			{
-				string subEmail;
-				string emailHashString;
-
-				subEmail = jsonSubscriber.GetValue("subscriberEmail").ToString();
-				var bytes = new byte[subEmail.Length * sizeof(char)];
-				System.Buffer.BlockCopy(subEmail.ToCharArray(), 0, bytes, 0, bytes.Length);
-
-				using (var sha = new SHA1Managed())
-				{					
-					emailHashString = BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "");
-				}
-
+				string subEmail = jsonSubscriber.GetValue("subscriberEmail").ToString();
+				string emailHashString = this.HashString(subEmail);
+				
 				//Check to see if this subscriber already exists
 				var sub = db.Subscribers.FirstOrDefault(s => s.EmailHash == emailHashString);
 				if (sub == null)
@@ -55,9 +40,7 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception e)
 			{
-				new LogEvent(200001, e).Raise();
-				Trace.WriteLine(String.Format("200001: {0}", e.Message), "Error");
-				return StatusCode(HttpStatusCode.InternalServerError);
+				return ErrorHandler.HandleError(200001, e, this);
 			}
 		}
 
@@ -70,9 +53,7 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception e)
 			{
-				new LogEvent(200002, e).Raise();
-				Trace.WriteLine(String.Format("200002: {0}", e.Message), "Error");
-				return StatusCode(HttpStatusCode.InternalServerError);
+				return ErrorHandler.HandleError(200002, e, this);
 			}
 		}
 
@@ -84,9 +65,7 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception e)
 			{
-				new LogEvent(200003, e).Raise();
-				Trace.WriteLine(String.Format("200003: {0}", e.Message), "Error");
-				return StatusCode(HttpStatusCode.InternalServerError);
+				return ErrorHandler.HandleError(200003, e, this);
 			}
 		}
 
@@ -105,11 +84,59 @@ namespace Choiisms.Controllers
 			}
 			catch (Exception e)
 			{
-				new LogEvent(200003, e).Raise();
-				Trace.WriteLine(String.Format("200003: {0}", e.Message), "Error");
-				return Ok(false);
+				return ErrorHandler.HandleError(200004, e, this);
 			}
 		}
 
-	}
+		[Authorize]
+		public IHttpActionResult DeleteSubscriber(int id)
+		{
+			try
+			{
+				var sub = db.Subscribers.Remove(db.Subscribers.First(s => s.SubscriberID == id));
+				db.SaveChanges();
+
+				return Ok(sub);
+			}
+			catch (Exception e)
+			{
+				return ErrorHandler.HandleError(200005, e, this);
+			}
+		}
+
+		[Authorize]
+		public IHttpActionResult PutSubscriber(JObject jsonChangedSubscribers)
+		{
+			try
+			{
+				foreach (JToken jt in jsonChangedSubscribers.GetValue("changedItems").AsEnumerable())
+				{
+					var id = Convert.ToInt32(jt["ID"]);
+					var sub = db.Subscribers.First(s => s.SubscriberID == id);
+					sub.Name = jt["name"].ToString();
+					sub.EmailAddress = jt["email"].ToString();
+					sub.EmailHash = this.HashString(jt["email"].ToString());
+				}
+
+				db.SaveChanges();
+
+				return Ok();
+			}
+			catch (Exception e)
+			{
+				return ErrorHandler.HandleError(200006, e, this);
+			}
+		}
+	
+		private string HashString(string valueToHash)
+		{
+			var bytes = new byte[valueToHash.Length * sizeof(char)];
+			System.Buffer.BlockCopy(valueToHash.ToCharArray(), 0, bytes, 0, bytes.Length);
+
+			using (var sha = new SHA1Managed())
+			{
+				return BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "");
+			}
+		}
+	}	
 }
