@@ -41,6 +41,8 @@ namespace Choiisms
 
 			bundles.Add(new StyleBundle("~/Content/fontawesome", "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css").Include(
 						"~/Content/font-awesome.css"));
+
+			BundleTable.EnableOptimizations = true;
 		}
 	}
 }
