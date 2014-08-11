@@ -68,15 +68,15 @@
 
     self.goHome = function () {
         self.appState('viewing');
-        self.resetSubmitForm();
+        self.resetSubmitForm(true);
         self.resetSubscribeForm(false);
     }
     
     self.selectedChoiismType.subscribe(function () {
-        self.resetSubmitForm();
+        self.resetSubmitForm(false);
     })
 
-    self.resetSubmitForm = function () {
+    self.resetSubmitForm = function (isSetRadios) {
         self.submitName('');
         self.isSubmitNameInvalid(false);
         self.submitStringChoiismValue('');
@@ -87,7 +87,8 @@
         self.submitLinkUrl('');
         self.isSubmitLinkUrlInvalid(false);
         self.submitLinkCaption('');
-        self.selectedChoiismType('string');
+        if (isSetRadios)
+            self.selectedChoiismType('string');
     }
 
     self.goToSubmit = function () {
