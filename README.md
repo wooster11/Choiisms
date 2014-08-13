@@ -22,3 +22,5 @@ Technologies used:
 
 
 Site released to App Harbor: http://choiisms.apphb.com
+
+I should also note that this is a really good candidate to use a NoSQL database. I have yet to learn any of the available technologies but may tackle that sometime later.
