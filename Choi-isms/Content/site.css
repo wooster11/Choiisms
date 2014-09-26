@@ -19,3 +19,7 @@ div.vcenter {
 table.vert-align * td {
     vertical-align: middle !important;
 }
+
+.img-center {
+    margin: 0 auto;
+}
